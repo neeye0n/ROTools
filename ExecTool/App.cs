@@ -96,12 +96,12 @@ namespace ItemDescTableModder
 
             var tagStack = new List<string>();
             var newDescriptions = new List<DynValue>();
-
             if (_config.EnableItemId != 0)
             {
                 newDescriptions.Add(DynValue.NewString($"^{_config.ItemIdDescTextColor}Item ID:^{_config.ItemIdDescValueColor} {itemId}^000000"));
             }
-            
+
+            bool hasMods = false;
             foreach (var materialType in _materialFiles.Keys)
             {
                 var config = GetMaterialConfig(materialType);
@@ -109,6 +109,7 @@ namespace ItemDescTableModder
 
                 if (materialTags[materialType].TryGetValue(itemId, out var materialInfo))
                 {
+                    hasMods = true;
                     // Collect tags for non-Instance materials
                     if (config.EnableTags != 0 && materialType != "Instance")
                     {
@@ -156,8 +157,12 @@ namespace ItemDescTableModder
                 updatedName = $"{joinedTags}{startingSpace}{updatedName}".Trim();
             }
 
-            // Blank space after custom descriptions
-            newDescriptions.Add(DynValue.NewString(" "));
+            if (hasMods)
+            {
+                // Blank space after custom descriptions
+                newDescriptions.Add(DynValue.NewString(" "));
+            }
+
             return new ItemUpdate(updatedName, newDescriptions);
         }
 
