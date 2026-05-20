@@ -91,7 +91,7 @@ _(or open `ItemDescTableModder.conf` directly in your editor to start customizin
 
 ## 🛡️ Tips & Reminders
 
-- **Always back up** your original `itemInfo_EN.lua` before making any changes.
+- **Always back up** your original `.lua` files before making any changes.
 - If something breaks or looks wrong in-game, try restoring the backup or **re-downloading patches** using your game patcher to fix it.
 - **Note:** Future game patches may **automatically overwrite** your modified `itemInfo_EN.lua`. If that happens, just run this tool again to reapply the changes.
 
