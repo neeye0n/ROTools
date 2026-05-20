@@ -22,7 +22,6 @@ namespace ItemDescTableModder
         private readonly Config _config;
         private readonly string _workingDir;
         private readonly string _outputDirectory;
-        private readonly string _outputFilename;
 
         private readonly Dictionary<string, string> _materialFiles = new()
         {
@@ -32,13 +31,13 @@ namespace ItemDescTableModder
             { "Instance", "instanceMatsTable.json" },
             { "PetEvo", "petEvoMatsTable.json" },
         };
+
         public App(IHttpClientFactory factory, ILogger<App> logger, ILuaTableHandler tableHandler, ILuaTableModifier tableModifier, string executableDirectory, IOptions<Config> config)
         {
             _httpClient = factory.CreateClient("ItemDescTableModder");
             _logger = logger;
             _tableHandler = tableHandler;
             _tableModifier = tableModifier;
-            _outputFilename = "itemInfo_EN.lua";
             _outputDirectory = "System";
             _workingDir = executableDirectory;
             _config = config.Value;
@@ -49,7 +48,7 @@ namespace ItemDescTableModder
             _logger.LogInformation("Starting to process the file...");
             try
             {
-                var table = _tableHandler.LoadFile(filePath, "tbl");
+                var table = _tableHandler.LoadFile(filePath);
                 if (table is null)
                 {
                     _logger.LogInformation("File has already been processed. Aborting...");
@@ -81,7 +80,8 @@ namespace ItemDescTableModder
                     });
                 }
 
-                _tableHandler.SaveToFile(table, GetOutputFullPath());
+                var fileName = Path.GetFileName(filePath);
+                _tableHandler.SaveToFile(table, GetOutputFullPath(fileName));
                 _logger.LogInformation("Done! Check the generated file in created System folder");
             }
             catch (Exception ex)
@@ -95,12 +95,13 @@ namespace ItemDescTableModder
             string updatedName = originalDisplayName?.Trim() ?? string.Empty;
 
             var tagStack = new List<string>();
-            var newDescriptions = new List<DynValue>
-            {
-                // Always add ItemId first to descriptions
-                DynValue.NewString($"^{_config.ItemIdDescTextColor}Item ID:^{_config.ItemIdDescValueColor} {itemId}^000000")
-            };
+            var newDescriptions = new List<DynValue>();
 
+            if (_config.EnableItemId != 0)
+            {
+                newDescriptions.Add(DynValue.NewString($"^{_config.ItemIdDescTextColor}Item ID:^{_config.ItemIdDescValueColor} {itemId}^000000"));
+            }
+            
             foreach (var materialType in _materialFiles.Keys)
             {
                 var config = GetMaterialConfig(materialType);
@@ -210,10 +211,10 @@ namespace ItemDescTableModder
             }
         }
 
-        private string GetOutputFullPath()
+        private string GetOutputFullPath(string outputFileName)
         {
             var folderPath = Path.Combine(_workingDir, _outputDirectory);
-            var fullFilePath = Path.Combine(folderPath, _outputFilename);
+            var fullFilePath = Path.Combine(folderPath, outputFileName);
             // Create the directory if it doesn't exist
             if (!Directory.Exists(folderPath))
             {

@@ -6,6 +6,10 @@ namespace ItemDescTableModder.Models
     public class Config()
     {
         [JsonProperty(Required = Required.Always)]
+        public required string ResourceUrl { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public required int EnableItemId { get; set; }
+        [JsonProperty(Required = Required.Always)]
         public required string ItemIdDescTextColor { get; set; }
         [JsonProperty(Required = Required.Always)]
         public required string ItemIdDescValueColor { get; set; }

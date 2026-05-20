@@ -58,6 +58,8 @@ namespace ItemDescTableModder
         {
             return new Config
             {
+                ResourceUrl = "https://neeye0n.github.io/flux/ItemDescTableModder/",
+                EnableItemId = 0,
                 ItemIdDescTextColor = "007ACC",
                 ItemIdDescValueColor = "FFB300",
                 BrewingConfig = new TaggingConfig
@@ -66,7 +68,7 @@ namespace ItemDescTableModder
                     EnableDescriptions = 1,
                     EnableDetailedDescriptions = 0,
                     TagText = "Brew",
-                    HeaderText = "Brewing Material",
+                    HeaderText = "Brewing Ingredients",
                     DescriptionHeaderColor = "00897B",
                     DescriptionRowsColor = "43A047"
                 },
@@ -76,7 +78,7 @@ namespace ItemDescTableModder
                     EnableDescriptions = 1,
                     EnableDetailedDescriptions = 0,
                     TagText = "Cook",
-                    HeaderText = "Cooking Material",
+                    HeaderText = "Cooking Ingredients",
                     DescriptionHeaderColor = "EF6C00",
                     DescriptionRowsColor = "6D4C41"
                 },
@@ -105,8 +107,8 @@ namespace ItemDescTableModder
                     EnableTags = 1,
                     EnableDescriptions = 1,
                     EnableDetailedDescriptions = 1,
-                    TagText = "PetEvo",
-                    HeaderText = "Pet Evo Material",
+                    TagText = "Pet",
+                    HeaderText = "Pet Evo Requirement",
                     DescriptionHeaderColor = "5C6BC0",
                     DescriptionRowsColor = "7986CB"
                 }

@@ -38,7 +38,7 @@ namespace ItemDescTableModder
             services.AddHttpClient("ItemDescTableModder", client =>
             {
                 client.Timeout = TimeSpan.FromMinutes(5);
-                client.BaseAddress = new Uri("https://neeye0n.github.io/flux/ItemDescTableModder/");
+                client.BaseAddress = new Uri(config.ResourceUrl);
             }).RemoveAllLoggers();
 
             services
@@ -57,12 +57,17 @@ namespace ItemDescTableModder
             try
             {
                 // Check if a file was provided as an argument (dragged onto the exe)
-                if (args.Length > 0 && File.Exists(args[0]))
+                if (args.Length > 0)
                 {
+                    foreach(var file in args)
+                    {
+                        if (File.Exists(file))
+                        {
+                            logger.LogInformation("Processing file: {filePath}", Path.GetFileName(file));
+                            await app.ProcessFile(file);
+                        }
+                    }
 
-                    string filePath = args[0];
-                    logger.LogInformation("Processing file: {filePath}", Path.GetFileName(filePath));
-                    await app.ProcessFile(filePath);
                     logger.LogInformation("Processing completed.");
                 }
                 else

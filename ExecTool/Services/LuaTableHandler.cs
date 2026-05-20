@@ -31,6 +31,39 @@ namespace ItemDescTableModder.Services
             return new LuaTableModel(content, tableData, tableIdentifier);
         }
 
+        public LuaTableModel? LoadFile(string filePath)
+        {
+            var tableIdentifier = string.Empty;
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException(nameof(filePath));
+
+            bool isProcessed = File.ReadAllLines(filePath)[0].Equals(HandlerSignature);
+            if (isProcessed)
+                return null;
+
+            // Read with proper encoding
+            string content = File.ReadAllText(filePath, Encoding);
+            var script = new Script();
+            script.DoString(content);
+
+            // Try to detect table identifier
+            foreach (var pair in script.Globals.Pairs.Where(k => k.Key.String.Contains("tbl") && k.Value.Table.Keys.Any()))
+            {
+                if (pair.Value.Type == DataType.Table)
+                {
+                    tableIdentifier = pair.Key.String;
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(tableIdentifier))
+                throw new InvalidOperationException("No item table found in Lua file.");
+
+            // Extract just the table portion
+            var tableData = script.Globals.Get(tableIdentifier).Table;
+            return new LuaTableModel(content, tableData, tableIdentifier);
+        }
+
         public void SaveToFile(LuaTableModel model, string filePath)
         {
             ArgumentNullException.ThrowIfNull(model);
