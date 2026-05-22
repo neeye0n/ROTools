@@ -33,7 +33,7 @@ namespace ItemDescTableModder.Models
         public required string TagText { get; set; }
         public required string HeaderText { get; set; }
         public required string DescriptionHeaderColor { get; set; }
-        public required string DescriptionRowsColor { get; set; }
+        public required string DetailedDescriptionColor { get; set; }
 
     }
 }

@@ -70,7 +70,7 @@ namespace ItemDescTableModder
                     TagText = "Brew",
                     HeaderText = "Brewing Ingredients",
                     DescriptionHeaderColor = "00897B",
-                    DescriptionRowsColor = "43A047"
+                    DetailedDescriptionColor = "43A047"
                 },
                 CookingConfig = new TaggingConfig
                 {
@@ -80,7 +80,7 @@ namespace ItemDescTableModder
                     TagText = "Cook",
                     HeaderText = "Cooking Ingredients",
                     DescriptionHeaderColor = "EF6C00",
-                    DescriptionRowsColor = "6D4C41"
+                    DetailedDescriptionColor = "6D4C41"
                 },
                 QuestConfig = new TaggingConfig
                 {
@@ -90,7 +90,7 @@ namespace ItemDescTableModder
                     TagText = "Quest",
                     HeaderText = "Quest Requirement",
                     DescriptionHeaderColor = "5E35B1",
-                    DescriptionRowsColor = "8E24AA"
+                    DetailedDescriptionColor = "8E24AA"
                 },
                 InstanceConfig = new TaggingConfig
                 {
@@ -100,7 +100,7 @@ namespace ItemDescTableModder
                     TagText = "Instance",
                     HeaderText = "Instance Requirement",
                     DescriptionHeaderColor = "C62828",
-                    DescriptionRowsColor = "D84315"
+                    DetailedDescriptionColor = "D84315"
                 },
                 PetEvoConfig = new TaggingConfig
                 {
@@ -110,7 +110,7 @@ namespace ItemDescTableModder
                     TagText = "Pet",
                     HeaderText = "Pet Evo Requirement",
                     DescriptionHeaderColor = "5C6BC0",
-                    DescriptionRowsColor = "7986CB"
+                    DetailedDescriptionColor = "7986CB"
                 }
             };
         }

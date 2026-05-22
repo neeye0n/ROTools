@@ -1,0 +1,15 @@
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\bin\Debug\net8.0\ItemDescAnnotationTableGenerator.exe
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\bin\Debug\net8.0\ItemDescAnnotationTableGenerator.deps.json
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\bin\Debug\net8.0\ItemDescAnnotationTableGenerator.runtimeconfig.json
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\bin\Debug\net8.0\ItemDescAnnotationTableGenerator.dll
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\bin\Debug\net8.0\ItemDescAnnotationTableGenerator.pdb
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.AssemblyInfoInputs.cache
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.AssemblyInfo.cs
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.csproj.CoreCompileInputs.cache
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.sourcelink.json
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.dll
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\refint\ItemDescAnnotationTableGenerator.dll
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.pdb
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ItemDescAnnotationTableGenerator.genruntimeconfig.cache
+D:\Repos\ItemDescTableModder\ItemDescAnnotationTableGenerator\obj\Debug\net8.0\ref\ItemDescAnnotationTableGenerator.dll

@@ -128,7 +128,7 @@ namespace ItemDescTableModder
                                 var parts = entry.Split("&&&", StringSplitOptions.TrimEntries);
                                 if (parts.Length >= 2)
                                 {
-                                    var detailLine = $"^{config.DescriptionRowsColor}{parts[0]} - Qty: {parts[1]}^000000";
+                                    var detailLine = $"^{config.DetailedDescriptionColor}{parts[0]} - Qty: {parts[1]}^000000";
                                     newDescriptions.Add(DynValue.NewString(detailLine));
                                 }
                             }

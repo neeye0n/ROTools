@@ -1,0 +1,48 @@
+{
+  "resourceUrl": "https://neeye0n.github.io/flux/ItemDescTableModder/",
+  "brewingConfig": {
+    "enableTags": 1,
+    "enableDescriptions": 1,
+    "enableDetailedDescriptions": 0,
+    "tagText": "Brew",
+    "headerText": "Brewing Material",
+    "descriptionHeaderColor": "00897B",
+    "detailedDescriptionColor": "43A047"
+  },
+  "cookingConfig": {
+    "enableTags": 1,
+    "enableDescriptions": 1,
+    "enableDetailedDescriptions": 0,
+    "tagText": "Cook",
+    "headerText": "Cooking Ingredient",
+    "descriptionHeaderColor": "EF6C00",
+    "detailedDescriptionColor": "6D4C41"
+  },
+  "questConfig": {
+    "enableTags": 1,
+    "enableDescriptions": 1,
+    "enableDetailedDescriptions": 1,
+    "tagText": "Quest",
+    "headerText": "Quest Item",
+    "descriptionHeaderColor": "5E35B1",
+    "detailedDescriptionColor": "8E24AA"
+  },
+  "instanceConfig": {
+    "enableTags": 1,
+    "enableDescriptions": 1,
+    "enableDetailedDescriptions": 1,
+    "tagText": "Inst",
+    "headerText": "Instance Requirement",
+    "descriptionHeaderColor": "C62828",
+    "detailedDescriptionColor": "D84315"
+  },
+  "petEvoConfig": {
+    "enableTags": 1,
+    "enableDescriptions": 1,
+    "enableDetailedDescriptions": 1,
+    "tagText": "Pet",
+    "headerText": "Pet Evolution",
+    "descriptionHeaderColor": "5C6BC0",
+    "detailedDescriptionColor": "7986CB"
+  }
+}
