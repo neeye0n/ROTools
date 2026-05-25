@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ItemDescAnnotationTableGenerator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+152e69ffe262891401ab6caa00c46e58aa70caee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f017105b991097a832621f3dc4020d0f275337f7")]
 [assembly: System.Reflection.AssemblyProductAttribute("ItemDescAnnotationTableGenerator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ItemDescAnnotationTableGenerator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

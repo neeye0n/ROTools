@@ -50,7 +50,7 @@ namespace ItemDescAnnotationTableGenerator
 
             using var http = new HttpClient();
 
-            // ── Fetch and invert category tables ──────────────────────────────
+            // ── Fetch and arrange resource data ──────────────────────────────
             var annotations = new Dictionary<int, List<Usage>>();
 
             foreach (var cat in Categories)
@@ -104,12 +104,14 @@ namespace ItemDescAnnotationTableGenerator
                     if (!u.Category.EnableTags) continue;
 
                     if (u.Category.IsSuffix)
+                        // ── Custom Instance Tags ─────────────────────────────────────────────────
                         suffixParts.Add($"{u.ProductName}-{u.Qty}");
                     else if (!prefixTags.Contains(u.Category.Tag))
                         prefixTags.Add(u.Category.Tag);
                 }
 
                 string nameTagPrefix = string.Join("", prefixTags);
+                // ── Custom Instance Tags ─────────────────────────────────────────────────
                 string nameTagSuffix = suffixParts.Count > 0
                     ? "(" + string.Join(", ", suffixParts) + ")"
                     : "";
