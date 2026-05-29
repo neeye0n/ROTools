@@ -59,7 +59,7 @@ namespace ItemDescTableModder
                 // Check if a file was provided as an argument (dragged onto the exe)
                 if (args.Length > 0)
                 {
-                    foreach(var file in args)
+                    foreach (var file in args)
                     {
                         if (File.Exists(file))
                         {

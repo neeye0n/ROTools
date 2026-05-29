@@ -1,4 +1,4 @@
-﻿# ⚙️ Configuration Guide – `ItemDescTableModder.conf`
+# ⚙️ Configuration Guide – `ItemDescTableModder.conf`
 
 This file controls how `ItemDescTableModder` customizes item names and descriptions in `itemInfo_EN.lua`.
 

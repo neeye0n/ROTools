@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="favicon.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
+    <Content Include="favicon.ico" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,8 @@
 
 namespace ItemDescTableModder.Models
 {
-    public class MaterialInfo
+    [method: JsonConstructor]
+    public class MaterialInfo()
     {
         [JsonPropertyName("matId")]
         public int MaterialId { get; set; }
@@ -10,10 +11,5 @@ namespace ItemDescTableModder.Models
         public string MaterialName { get; set; }
         [JsonPropertyName("qty")]
         public int Quantity { get; set; }
-
-        public MaterialInfo()
-        {
-            MaterialName = string.Empty;
-        }
     }
 }
