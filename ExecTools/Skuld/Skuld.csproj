@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>skuld.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="itemInfo_f.lua" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="itemInfo_f.lua" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="skuld.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.55.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.8" />
+  </ItemGroup>
+
+</Project>

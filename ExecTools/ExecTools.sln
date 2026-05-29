@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemDescTableModder", "Item
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemDescAnnotationTableGenerator", "ItemDescAnnotationTableGenerator\ItemDescAnnotationTableGenerator.csproj", "{B627E4B1-0791-41E9-9BCE-4CA6D69375B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuld", "Skuld\Skuld.csproj", "{FFD92EA2-008B-4212-B0DB-940CD2F8A508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B627E4B1-0791-41E9-9BCE-4CA6D69375B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B627E4B1-0791-41E9-9BCE-4CA6D69375B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B627E4B1-0791-41E9-9BCE-4CA6D69375B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFD92EA2-008B-4212-B0DB-940CD2F8A508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD92EA2-008B-4212-B0DB-940CD2F8A508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD92EA2-008B-4212-B0DB-940CD2F8A508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD92EA2-008B-4212-B0DB-940CD2F8A508}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
