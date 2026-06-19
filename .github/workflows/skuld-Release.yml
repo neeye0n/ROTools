@@ -1,4 +1,4 @@
-name: Build, Run, and Release
+name: '[SKULD] Build, Run, and Release'
 
 on:
   workflow_dispatch:
