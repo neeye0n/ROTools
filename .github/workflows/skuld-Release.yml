@@ -47,13 +47,14 @@ jobs:
         working-directory: ./publish
         shell: bash
         run: |
-          ZIP_PATH=$(find "$(pwd)" -maxdepth 3 -name "*.zip" | head -n 1)
-          if [ -z "$ZIP_PATH" ]; then
+          ZIP_REL=$(find . -maxdepth 3 -iname "*.zip" | head -n 1)
+          if [ -z "$ZIP_REL" ]; then
             echo "No zip file found!" >&2
             exit 1
           fi
-          echo "Found: $ZIP_PATH"
-          echo "zip_path=$ZIP_PATH" >> "$GITHUB_OUTPUT"
+          ZIP_REL=${ZIP_REL#./}
+          echo "Found: publish/$ZIP_REL"
+          echo "zip_path=publish/$ZIP_REL" >> "$GITHUB_OUTPUT"
 
       - name: Create Release and upload zip
         uses: softprops/action-gh-release@v2
