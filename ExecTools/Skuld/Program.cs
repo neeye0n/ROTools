@@ -38,7 +38,10 @@ namespace Skuld
                 await File.WriteAllTextAsync(configPath, JsonSerializer.Serialize(defaultConfig, new JsonSerializerOptions { WriteIndented = true }));
                 AnsiConsole.MarkupLine($"⚙️ [yellow]Created default generatorConfig.json at:[/]\n  {configPath}");
                 AnsiConsole.MarkupLine("⚙️ [yellow]Press any key to close the app, then re-run it.[/]");
-                Console.ReadKey();
+                if (!Console.IsInputRedirected)
+                {
+                    Console.ReadKey();
+                }
                 return;
             }
 
@@ -218,7 +221,10 @@ namespace Skuld
             AnsiConsole.MarkupLine($"✅ [cyan]Done! Written to:[/]\n  [grey]{zipPath}[/]");
             AnsiConsole.MarkupLine($"✅ [cyan]Total items annotated:[/] [yellow bold]{annotations.Count}[/]");
             AnsiConsole.MarkupLine("[green]Press any key to exit...[/] ✎");
-            Console.ReadKey();
+            if (!Console.IsInputRedirected)
+            {
+                Console.ReadKey();
+            }
         }
     }
 
