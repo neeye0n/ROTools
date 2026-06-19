@@ -57,8 +57,8 @@ jobs:
       - name: Create Release and upload zip
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ inputs.version }}
-          name: Release ${{ inputs.version }}
+          tag_name: SKULD_${{ inputs.version }}
+          name: SKULD_${{ inputs.version }}
           files: ${{ steps.find_zip.outputs.zip_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
