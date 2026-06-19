@@ -24,22 +24,23 @@ jobs:
           dotnet-version: '8.0.x'   # <-- change to match your project's target framework
 
       - name: Restore dependencies
-        run: dotnet restore
+        # <-- same project path as below -- only restores this project (and anything it references)
+        run: dotnet restore ./ExecTools/Skuld/Skuld.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./ExecTools/Skuld/Skuld.csproj --configuration Release --no-restore
 
       - name: Publish
         # <-- change the path below to your .csproj
-        run: dotnet publish ./YourConsoleApp/YourConsoleApp.csproj -c Release -o ./publish
+        run: dotnet publish ./ExecTools/Skuld/Skuld.csproj -c Release -o ./publish
 
       - name: First run -- expected to fail, just creates the default config
         working-directory: ./publish
-        run: dotnet YourConsoleApp.dll || true
+        run: dotnet Skuld.dll || true
 
       - name: Second run -- config now exists, app does the real work and produces the zip
         working-directory: ./publish
-        run: dotnet YourConsoleApp.dll   # <-- change to your published .dll name, add any CLI args here
+        run: dotnet Skuld.dll   # <-- change to your published .dll name, add any CLI args here
 
       - name: Locate the generated zip
         id: find_zip
