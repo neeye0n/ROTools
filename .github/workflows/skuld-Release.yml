@@ -1,4 +1,4 @@
-name: "[SKULD] Build, Run, and Release"
+name: Build, Run, and Release
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build-run-release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -21,30 +21,31 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'   # <-- change to match your project's target framework
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        # <-- same project path as below -- only restores this project (and anything it references)
         run: dotnet restore ./ExecTools/Skuld/Skuld.csproj
 
       - name: Build
         run: dotnet build ./ExecTools/Skuld/Skuld.csproj --configuration Release --no-restore
 
       - name: Publish
-        # <-- change the path below to your .csproj
-        run: dotnet publish ./ExecTools/Skuld/Skuld.csproj -c Release -o ./publish
+        run: dotnet publish ./ExecTools/Skuld/Skuld.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
 
       - name: First run -- expected to fail, just creates the default config
         working-directory: ./publish
-        run: dotnet Skuld.dll || true
+        shell: bash
+        run: ./Skuld.exe || true
 
       - name: Second run -- config now exists, app does the real work and produces the zip
         working-directory: ./publish
-        run: dotnet Skuld.dll   # <-- change to your published .dll name, add any CLI args here
+        shell: bash
+        run: ./Skuld.exe
 
       - name: Locate the generated zip
         id: find_zip
         working-directory: ./publish
+        shell: bash
         run: |
           ZIP_PATH=$(find "$(pwd)" -maxdepth 3 -name "*.zip" | head -n 1)
           if [ -z "$ZIP_PATH" ]; then
@@ -64,7 +65,10 @@ jobs:
             ### Installation instructions
             1. **Extract** `System.zip` directly into your main Ragnarok directory (e.g., `Revenant Elegy`).
             2. **Overwrite** any existing files if prompted by your system.
-            <hr>  
-          files: ${{ steps.find_zip.outputs.zip_path }}
+            <hr> 
+
+          files: |
+            ${{ steps.find_zip.outputs.zip_path }}
+            ./publish/Skuld.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
