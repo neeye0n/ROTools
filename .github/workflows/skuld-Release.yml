@@ -30,7 +30,7 @@ jobs:
         run: dotnet build ./ExecTools/Skuld/Skuld.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./ExecTools/Skuld/Skuld.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+        run: dotnet publish ./ExecTools/Skuld/Skuld.csproj -c Release -r win-x86 --self-contained true -p:PublishSingleFile=true -o ./publish
 
       - name: First run -- expected to fail, just creates the default config
         working-directory: ./publish
