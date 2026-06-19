@@ -1,0 +1,63 @@
+name: Build, Run, and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag/version (e.g. v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write   # needed so the workflow can create a release and upload assets
+
+jobs:
+  build-run-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'   # <-- change to match your project's target framework
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish
+        # <-- change the path below to your .csproj
+        run: dotnet publish ./YourConsoleApp/YourConsoleApp.csproj -c Release -o ./publish
+
+      - name: First run -- expected to fail, just creates the default config
+        working-directory: ./publish
+        run: dotnet YourConsoleApp.dll || true
+
+      - name: Second run -- config now exists, app does the real work and produces the zip
+        working-directory: ./publish
+        run: dotnet YourConsoleApp.dll   # <-- change to your published .dll name, add any CLI args here
+
+      - name: Locate the generated zip
+        id: find_zip
+        working-directory: ./publish
+        run: |
+          ZIP_PATH=$(find "$(pwd)" -maxdepth 3 -name "*.zip" | head -n 1)
+          if [ -z "$ZIP_PATH" ]; then
+            echo "No zip file found!" >&2
+            exit 1
+          fi
+          echo "Found: $ZIP_PATH"
+          echo "zip_path=$ZIP_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release and upload zip
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
+          files: ${{ steps.find_zip.outputs.zip_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
