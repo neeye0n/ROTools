@@ -56,20 +56,29 @@ jobs:
           echo "Found: publish/$ZIP_REL"
           echo "zip_path=publish/$ZIP_REL" >> "$GITHUB_OUTPUT"
 
-      - name: Create Release and upload zip
+      - name: Verify config file exists
+        working-directory: ./publish
+        shell: bash
+        run: |
+          if [ ! -f "skuldConf.json" ]; then
+            echo "Config file not found!" >&2
+            exit 1
+          fi
+          echo "✓ skuldConf.json found"
+
+      - name: Create Release and upload artifacts
         uses: softprops/action-gh-release@v2
         with:
           tag_name: SKULD_${{ inputs.version }}
           name: SKULD_${{ inputs.version }}
           body: |
             > ⚠️ **Critical:** Always back up your `System` folder before proceeding with the installation.
-            ### Installation instructions
-            1. **Extract** `System.zip` directly into your main Ragnarok directory (e.g., `Revenant Elegy`).
-            2. **Overwrite** any existing files if prompted by your system.
-            <hr> 
+            
+            For installation and usage instructions, see the [SKULD README](https://github.com/neeye0n/ROTools/blob/main/ExecTools/Skuld/README.md)
 
           files: |
             ${{ steps.find_zip.outputs.zip_path }}
             ./publish/Skuld.exe
+            ./publish/skuldConf.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

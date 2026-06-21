@@ -1,16 +1,21 @@
 ﻿using Spectre.Console;
 using System.IO.Compression;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Skuld
 {
     internal class Program
     {
-        const string ColorReset = "^000000";
-        const string ZipInternalPath = "System/LuaFiles514/";
-        const string EmbResouceFile = "itemInfo_f.lua";
-        const string AnnotationsFile = "itemAnnotations.lua";
+        private const string ColorReset = "^000000";
+        private const string ZipInternalPath = "System/LuaFiles514/";
+        private const string EmbResouceFile = "itemInfo_f.lua";
+        private const string AnnotationsFile = "itemAnnotations.lua";
+        private const string ConfigFile = "skuldConf.json";
+        // TODO: Add BYO resource file feature, Hardcoding this for now
+        private const string ResourceUrl = @"https://neeye0n.github.io/flux/ItemDescTableModder/";
 
         static async Task Main()
         {
@@ -30,13 +35,18 @@ namespace Skuld
 
             AnsiConsole.MarkupLine("[bold blue]SKULD[/] is writing... ✏️");
 
-            // ── Load generatorConfig.json ─────────────────────────────────────
-            string configPath = Path.Combine(AppContext.BaseDirectory, "generatorConfig.json");
-            if (!File.Exists(configPath))
+            // ── Load skuldConfig.json ─────────────────────────────────────
+            string configPath = Path.Combine(AppContext.BaseDirectory, ConfigFile);
+            GeneratorConfig config;
+
+            var loadedConfig = await LoadOrRecreateConfig(configPath);
+            if (loadedConfig is null)
             {
+                // Create new default config
                 var defaultConfig = new GeneratorConfig();
-                await File.WriteAllTextAsync(configPath, JsonSerializer.Serialize(defaultConfig, new JsonSerializerOptions { WriteIndented = true }));
-                AnsiConsole.MarkupLine($"⚙️ [yellow]Created default generatorConfig.json at:[/]\n  {configPath}");
+                await File.WriteAllTextAsync(configPath, JsonSerializer.Serialize(defaultConfig,
+                    new JsonSerializerOptions { WriteIndented = true }));
+                AnsiConsole.MarkupLine($"⚙️ [yellow]Created default {ConfigFile} at:[/]\n  {configPath}");
                 AnsiConsole.MarkupLine("⚙️ [yellow]Press any key to close the app, then re-run it.[/]");
                 if (!Console.IsInputRedirected)
                 {
@@ -44,25 +54,14 @@ namespace Skuld
                 }
                 return;
             }
-
-            GeneratorConfig config;
-            try
-            {
-                var configJson = await File.ReadAllTextAsync(configPath);
-                config = JsonSerializer.Deserialize<GeneratorConfig>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"❌ [red]Error reading generatorConfig.json:[/]\n  {ex.Message}");
-                return;
-            }
+            config = loadedConfig;
 
 #if DEBUG
-            AnsiConsole.MarkupLine($"📜 [cyan]Resource URL:[/]\n  [grey]{config.ResourceUrl}[/]");
+            AnsiConsole.MarkupLine($"📜 [cyan]Resource URL:[/]\n  [grey]{ResourceUrl}[/]");
             AnsiConsole.WriteLine();
 #endif
 
-            // ── Build CategoryConfig list from JSON config ─────────────────────
+            // ── Build CategoryConfig list from Material Tables ─────────────────────
             var Categories = new List<CategoryConfig>
             {
                 CategoryConfig.From("brewingMatsTable.json",  config.BrewingConfig,  isSuffix: false),
@@ -70,6 +69,7 @@ namespace Skuld
                 CategoryConfig.From("questMatsTable.json",    config.QuestConfig,    isSuffix: false),
                 CategoryConfig.From("instanceMatsTable.json", config.InstanceConfig, isSuffix: true),
                 CategoryConfig.From("petEvoMatsTable.json",   config.PetEvoConfig,   isSuffix: false),
+                CategoryConfig.From("expQuestMatsTable.json",   config.ExpQuestConfig,   isSuffix: false),
             };
 
             using var http = new HttpClient();
@@ -79,46 +79,44 @@ namespace Skuld
             await AnsiConsole.Status()
                 .Spinner(Spinner.Known.Dots)
                 .StartAsync("🔃 Fetching and Arranging Data...", async ctx =>
-            {
-                foreach (var cat in Categories)
                 {
-                    ctx.Status($"🔍 Reading {cat.File}...");
-                    await Task.Delay(500);
-                    try
+                    foreach (var cat in Categories)
                     {
-                        var json = await http.GetStringAsync(config.ResourceUrl + cat.File);
-                        var table = JsonSerializer.Deserialize<Dictionary<string, JsonElement[]>>(json)!;
-
-                        int count = 0;
-                        foreach (var (productName, materials) in table)
+                        ctx.Status($"🔍 Reading {cat.File}...");
+                        await Task.Delay(500);
+                        try
                         {
-                            foreach (var mat in materials)
+                            var json = await http.GetStringAsync(ResourceUrl + cat.File);
+                            var table = JsonSerializer.Deserialize<Dictionary<string, JsonElement[]>>(json)!;
+
+                            int count = 0;
+                            foreach (var (productName, materials) in table)
                             {
-                                if (!mat.TryGetProperty("matId", out var matIdEl)) continue;
-                                int matId = matIdEl.GetInt32();
-                                int qty = mat.TryGetProperty("qty", out var qtyEl) ? qtyEl.GetInt32() : 1;
+                                foreach (var mat in materials)
+                                {
+                                    if (!mat.TryGetProperty("matId", out var matIdEl)) continue;
+                                    int matId = matIdEl.GetInt32();
+                                    int qty = mat.TryGetProperty("qty", out var qtyEl) ? qtyEl.GetInt32() : 1;
 
-                                if (!annotations.ContainsKey(matId))
-                                    annotations[matId] = [];
+                                    if (!annotations.ContainsKey(matId))
+                                        annotations[matId] = [];
 
-                                annotations[matId].Add(new Usage(cat, productName, qty));
-                                count++;
+                                    annotations[matId].Add(new Usage(cat, productName, qty));
+                                    count++;
+                                }
                             }
-                        }
 
 #if DEBUG
-                        ctx.Status($"✔️ Loaded {table.Count}, {count} material entries.");
+                            ctx.Status($"✔️ Loaded {table.Count}, {count} material entries.");
 #endif
+                        }
+                        catch (Exception ex)
+                        {
+                            AnsiConsole.MarkupLine($"❌ [red]Error loading {cat.File}:[/]\n  {ex.Message}");
+                        }
+                        await Task.Delay(500);
                     }
-                    catch (Exception ex)
-                    {
-                        AnsiConsole.MarkupLine($"❌ [red]Error loading {cat.File}:[/]\n  {ex.Message}");
-                    }
-                    await Task.Delay(500);
-                }
-            });
-
-
+                });
 
             // ── Build itemAnnotations.lua content ─────────────────────────────
             AnsiConsole.MarkupLine("\n🔨 [bold blue]Generating itemAnnotations.lua[/]...");
@@ -225,6 +223,107 @@ namespace Skuld
             {
                 Console.ReadKey();
             }
+        }
+
+        static async Task<GeneratorConfig?> LoadOrRecreateConfig(string configPath)
+        {
+            if (!File.Exists(configPath))
+            {
+                return null; // Will be created as default
+            }
+
+            try
+            {
+                var configJson = await File.ReadAllTextAsync(configPath);
+
+                // Parse as raw dictionary to validate structure
+                var rawConfig = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(configJson,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (rawConfig == null || !ValidateConfigStructure(rawConfig))
+                {
+                    AnsiConsole.MarkupLine("⚠️ [yellow]Config is malformed or missing required fields.[/]");
+                    AnsiConsole.MarkupLine("🔄 [yellow]Recreating config...[/]");
+                    File.Delete(configPath);
+                    return null;
+                }
+
+                var config = JsonSerializer.Deserialize<GeneratorConfig>(configJson,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return config;
+            }
+            catch (JsonException ex)
+            {
+                AnsiConsole.MarkupLine($"⚠️ [yellow]Config file is corrupted:[/]\n  {ex.Message}");
+                AnsiConsole.MarkupLine("🔄 [yellow]Recreating config...[/]");
+                File.Delete(configPath);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"❌ [red]Error reading config:[/]\n  {ex.Message}");
+                File.Delete(configPath);
+                return null;
+            }
+        }
+
+        static bool ValidateConfigStructure(Dictionary<string, JsonElement> rawConfig)
+        {
+            // Validate GeneratorConfig properties
+            var configProps = typeof(GeneratorConfig).GetProperties();
+
+            foreach (var prop in configProps)
+            {
+                var jsonAttr = prop.GetCustomAttribute<JsonPropertyNameAttribute>();
+                string jsonKey = jsonAttr?.Name ?? prop.Name;
+
+                if (!rawConfig.ContainsKey(jsonKey))
+                {
+                    AnsiConsole.MarkupLine($"❌ [red]Missing required key: {jsonKey}[/]");
+                    return false;
+                }
+            }
+
+            // Validate all CategoryJsonConfig nested objects
+            var categoryProps = configProps.Where(p => p.PropertyType == typeof(CategoryJsonConfig));
+            var categoryFieldNames = typeof(CategoryJsonConfig).GetProperties()
+                .Select(p => (p.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name ?? p.Name, p.PropertyType))
+                .ToList();
+
+            foreach (var catProp in categoryProps)
+            {
+                var jsonAttr = catProp.GetCustomAttribute<JsonPropertyNameAttribute>();
+                string catKey = jsonAttr?.Name ?? catProp.Name;
+
+                if (!rawConfig[catKey].ValueKind.HasFlag(JsonValueKind.Object))
+                    return false;
+
+                foreach (var (fieldName, fieldType) in categoryFieldNames)
+                {
+                    if (!rawConfig[catKey].TryGetProperty(fieldName, out var value))
+                    {
+                        AnsiConsole.MarkupLine($"❌ [red]Missing '{fieldName}' in {catKey}[/]");
+                        return false;
+                    }
+
+                    // Validate hex colors
+                    if (fieldName.Contains("Color") && !IsValidHexColor(value.GetString()))
+                    {
+                        AnsiConsole.MarkupLine($"❌ [red]Invalid color format in {catKey}.{fieldName}[/]");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        static bool IsValidHexColor(string? color)
+        {
+            return !string.IsNullOrWhiteSpace(color) &&
+                   color.Length == 6 &&
+                   color.All(c => "0123456789ABCDEFabcdef".Contains(c));
         }
     }
 

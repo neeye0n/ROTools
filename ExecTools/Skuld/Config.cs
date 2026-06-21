@@ -4,8 +4,6 @@ namespace Skuld
 {
     public class GeneratorConfig
     {
-        [JsonPropertyName("resourceUrl")]
-        public string ResourceUrl { get; set; } = "https://neeye0n.github.io/flux/ItemDescTableModder/";
         [JsonPropertyName("brewingConfig")]
         public CategoryJsonConfig BrewingConfig { get; set; } = new("Brew", "Brewing Material", "00897B", "43A047");
 
@@ -13,13 +11,16 @@ namespace Skuld
         public CategoryJsonConfig CookingConfig { get; set; } = new("Cook", "Cooking Ingredient", "EF6C00", "6D4C41");
 
         [JsonPropertyName("questConfig")]
-        public CategoryJsonConfig QuestConfig { get; set; } = new("Quest", "Quest Item", "5E35B1", "8E24AA", enableDetailed: 1);
+        public CategoryJsonConfig QuestConfig { get; set; } = new("Craft", "Crafting Quest", "5E35B1", "8E24AA", enableDetailed: 1);
 
         [JsonPropertyName("instanceConfig")]
-        public CategoryJsonConfig InstanceConfig { get; set; } = new("Inst", "Instance Requirement", "C62828", "D84315", enableDetailed: 1);
+        public CategoryJsonConfig InstanceConfig { get; set; } = new("Inst", "Instance Access", "C62828", "D84315", enableDetailed: 1);
 
         [JsonPropertyName("petEvoConfig")]
         public CategoryJsonConfig PetEvoConfig { get; set; } = new("Pet", "Pet Evolution", "5C6BC0", "7986CB", enableDetailed: 1);
+
+        [JsonPropertyName("expQuestConfig")]
+        public CategoryJsonConfig ExpQuestConfig { get; set; } = new("Exp", "Exp Quest Turn-In", "E91E63", "C2185B", enableDetailed: 1);
     }
 
     public class CategoryJsonConfig
