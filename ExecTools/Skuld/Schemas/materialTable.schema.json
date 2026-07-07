@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [ "schemaVersion", "display", "entries" ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "sourceName": { "type": "string" },
+    "description": { "type": "string" },
+    "display": {
+      "type": "object",
+      "required": [
+        "enableTags",
+        "tagText",
+        "isSuffix",
+        "enableDescriptions",
+        "headerText",
+        "descriptionHeaderColor",
+        "enableDetailedDescriptions",
+        "detailedDescriptionColor"
+      ],
+      "properties": {
+        "enableTags": { "type": "boolean" },
+        "tagText": { "type": "string" },
+        "isSuffix": { "type": "boolean" },
+        "enableDescriptions": { "type": "boolean" },
+        "headerText": { "type": "string" },
+        "descriptionHeaderColor": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$"
+        },
+        "enableDetailedDescriptions": { "type": "boolean" },
+        "detailedDescriptionColor": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$"
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [ "entryId", "label", "materials" ],
+        "properties": {
+          "entryId": { "type": "integer" },
+          "label": { "type": "string" },
+          "alt-label": { "type": "string" },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [ "matId", "matName","qty" ],
+              "properties": {
+                "matId": { "type": "integer" },
+                "matName": { "type": "string" },
+                "qty": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "display": {
+        "properties": { "isSuffix": { "const": true } }
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "entries": {
+        "items": {
+          "required": [ "alt-label" ],
+          "properties": {
+            "altLabel": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

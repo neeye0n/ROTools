@@ -11,6 +11,8 @@ local function trim(s)
     return s:match("^%s*(.-)%s*$")
 end
 
+local customServerItemDb = "Elegy"
+
 function main()
 	for ItemID, DESC in pairs(tbl) do
 		
@@ -89,21 +91,36 @@ function main()
 				end
 			end
 		end
+		-- START Print Item ID first before other descriptions
+		if (DisplayServer == 3 and DESC.Server ~= nil) or (DisplayCustomServer == 3 and DESC.Custom == true) or DisplayItemID == 2 or DisplayDatabase == true or DisplayCustomDB == true then
+			if DisplayDatabase == true or DisplayCustomDB == true then
+				if DisplayDatabase == true and DESC.Custom == nil then
+					local Database = ItemDatabase[customServerItemDb]
+					if DESC.Server ~= nil and ItemDatabase[DESC.Server] ~= nil then
+						Database = ItemDatabase[DESC.Server]
+					end
+				-- START Unify Item ID and Item Url
+					-- AddItemIdentifiedDesc(ItemID, "<URL>" .. Database.Name .. "<INFO>" .. Database.URL .. ItemID .. "</INFO></URL>")
+					AddItemIdentifiedDesc(ItemID, "^0000CCID:^000000 <URL>" .. ItemID .. "<INFO>" .. Database.URL .. ItemID .. "</INFO></URL>")
+				elseif DisplayCustomDB == true and DESC.Custom == true then
+					-- AddItemIdentifiedDesc(ItemID, "<URL>" .. ItemDatabase["Custom"].Name .. "<INFO>" .. ItemDatabase["Custom"].URL .. ItemID .. "</INFO></URL>")
+					AddItemIdentifiedDesc(ItemID, "^0000CCID:^000000 <URL>" .. ItemID .. "<INFO>" .. ItemDatabase["Custom"].URL .. ItemID .. "</INFO></URL>")
+				end
+				-- END Unify Item ID and Item Url
+			end
+		end 
+		-- END Print Item ID first before other descriptions
+
 		for k, v in pairs(DESC.identifiedDescriptionName) do
 			result, msg = AddItemIdentifiedDesc(ItemID, v)
 			if not result == true then
 				return false, msg
 			end
 		end
+
 		if (DisplayServer == 3 and DESC.Server ~= nil) or (DisplayCustomServer == 3 and DESC.Custom == true) or DisplayItemID == 2 or DisplayDatabase == true or DisplayCustomDB == true then
 			AddItemIdentifiedDesc(ItemID, "________________________")
 			
-			-- START Prevent reading DisplayItemID from itemInfo.lua
-			-- if DisplayItemID == 2 then
-			-- 	 AddItemIdentifiedDesc(ItemID, "^007ACCItem ID:^FFB300 "..ItemID)
-			-- end
-			-- END Prevent reading DisplayItemID from itemInfo.lua
-
 			-- START Read and Apply item annotations
 			if itemAnnotations ~= nil and itemAnnotations[ItemID] ~= nil and itemAnnotations[ItemID].descLines ~= nil then
 				for _, line in ipairs(itemAnnotations[ItemID].descLines) do
@@ -117,21 +134,7 @@ function main()
 			elseif DisplayCustomServer == 3 and DESC.Custom == true then
 				AddItemIdentifiedDesc(ItemID, "^0000CCServer: "..CServerColour..CServerName.."^000000")
 			end
-			if DisplayDatabase == true or DisplayCustomDB == true then
-				if DisplayDatabase == true and DESC.Custom == nil then
-					local Database = ItemDatabase["Elegy"]
-					if DESC.Server ~= nil and ItemDatabase[DESC.Server] ~= nil then
-						Database = ItemDatabase[DESC.Server]
-					end
-				-- START Unify Item ID and Item Url
-					-- AddItemIdentifiedDesc(ItemID, "<URL>" .. Database.Name .. "<INFO>" .. Database.URL .. ItemID .. "</INFO></URL>")
-					AddItemIdentifiedDesc(ItemID, "^0000CCID:^000000 " .. ItemID .."  <URL>[»]<INFO>" .. Database.URL .. ItemID .. "</INFO></URL>")
-				elseif DisplayCustomDB == true and DESC.Custom == true then
-					-- AddItemIdentifiedDesc(ItemID, "<URL>" .. ItemDatabase["Custom"].Name .. "<INFO>" .. ItemDatabase["Custom"].URL .. ItemID .. "</INFO></URL>")
-					AddItemIdentifiedDesc(ItemID, "^0000CCID:^000000 " .. ItemID .."  <URL>[»]<INFO>" .. ItemDatabase["Custom"].URL .. ItemID .. "</INFO></URL>")
-				end
-				-- END Unify Item ID and Item Url
-			end
+
 		end
 		if DESC.EffectID~= nil then
 			result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)

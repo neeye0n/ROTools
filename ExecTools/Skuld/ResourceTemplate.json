@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "sourceName": "Category Name",
+  "description": "Human readable description",
+  "display": {
+    "enableTags": true,
+    "tagText": "Tag Text",
+    "isSuffix": false,
+    "enableDescriptions": true,
+    "headerText": "Header Text",
+    "descriptionHeaderColor": "000000",
+    "enableDetailedDescriptions": false,
+    "detailedDescriptionColor": "000000"
+  },
+  "entries": [
+    {
+      "entryId": 1,
+      "label": "Product",
+      "materials": [
+        {
+          "matId": 101,
+          "matName": "Material 1",
+          "qty": 1
+        },
+        {
+          "matId": 102,
+          "matName": "Material 2",
+          "qty": 100
+        }
+      ]
+    }
+  ]
+}

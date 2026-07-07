@@ -10,10 +10,12 @@
 
   <ItemGroup>
     <None Remove="itemInfo_f.lua" />
+    <None Remove="Schemas\materialTable.schema.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="itemInfo_f.lua" />
+    <EmbeddedResource Include="Schemas\materialTable.schema.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,8 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" Version="9.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.9" />
     <PackageReference Include="Spectre.Console" Version="0.55.2" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ResourceTemplate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
