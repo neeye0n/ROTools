@@ -129,7 +129,7 @@ Want to add your own material tables — your server's custom items, a private c
     {
       "entryId": 1,
       "label": "Product",
-      "altLabel": "Short Name",
+      "alt-label": "Short Name",
       "materials": [
         { "matId": 101, "matName": "Material 1", "qty": 1 },
         { "matId": 102, "matName": "Material 2", "qty": 100 }
@@ -161,16 +161,16 @@ Want to add your own material tables — your server's custom items, a private c
 
 ⚠️ **`isSuffix` requirements:** If `display.isSuffix` is set to `true`:
 - `display.enableDetailedDescriptions` **must also be `true`**. Suffix mode works by appending short names after the item's tag, and those short names are pulled from the detailed description list — so it can't function with detailed descriptions turned off.
-- Every entry in the file **must have a non-empty `altLabel`**. This is the shorter name that actually gets shown as the suffix — `label` alone is not used in suffix mode.
+- Every entry in the file **must have a non-empty `alt-label`**. This is the shorter name that actually gets shown as the suffix — `label` alone is not used in suffix mode.
 
 If either of these is missed, the source will fail validation and be skipped entirely (see Troubleshooting below).
 
 ⚠️ **The schema matters.** SKULD checks every source file against this format before using it. If a required field is missing, misspelled, or the wrong type (e.g. text where a number is expected), that source is skipped and an error is logged — the rest of your sources still process normally. Double-check your file matches `resourceTemplate.json` closely, especially:
-- Every required field is present and spelled exactly right (case-sensitive) — note it's `altLabel`, not `alt-label` or `alt_label`
+- Every required field is present and spelled exactly right (case-sensitive) — note it's `alt-label`, not `altLabel` or `alt_label`
 - Colors are exactly 6 hex characters, no `#`
 - `entryId` values are unique within the file
 - `qty` values are whole numbers greater than 0
-- If `isSuffix` is `true`, `enableDetailedDescriptions` is also `true` and every entry has an `altLabel`
+- If `isSuffix` is `true`, `enableDetailedDescriptions` is also `true` and every entry has an `alt-label`
 
 ## 📦 Output
 
@@ -180,7 +180,7 @@ Generates `System.zip` containing:
 
 ## 🔧 Troubleshooting
 
-### "requires a non-empty 'altLabel'" error
+### "requires a non-empty 'alt-label'" error
 - This means `display.isSuffix` is set to `true`, but one or more entries are missing `alt-label`
 - Add a short `alt-label` to every entry in the file, or set `isSuffix` back to `false` if you don't need suffix-style display
 
