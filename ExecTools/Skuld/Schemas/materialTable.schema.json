@@ -51,7 +51,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": [ "matId", "matName","qty" ],
+              "required": [ "matId", "matName", "qty" ],
               "properties": {
                 "matId": { "type": "integer" },
                 "matName": { "type": "string" },
@@ -75,6 +75,12 @@
   },
   "then": {
     "properties": {
+      "display": {
+        "required": [ "enableDetailedDescriptions" ],
+        "properties": {
+          "enableDetailedDescriptions": { "const": true }
+        }
+      },
       "entries": {
         "items": {
           "required": [ "alt-label" ],

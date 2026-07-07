@@ -16,6 +16,7 @@
     {
       "entryId": 1,
       "label": "Product",
+      "alt-label": "Prod",
       "materials": [
         {
           "matId": 101,
