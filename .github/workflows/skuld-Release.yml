@@ -65,6 +65,16 @@ jobs:
             exit 1
           fi
           echo "✓ skuldConf.json found"
+      
+      - name: Verify resource template file exists
+        working-directory: ./publish
+        shell: bash
+        run: |
+          if [ ! -f "resourceTemplate.json" ]; then
+            echo "Config file not found!" >&2
+            exit 1
+          fi
+          echo "✓ resourceTemplate.json found"
 
       - name: Create Release and upload artifacts
         uses: softprops/action-gh-release@v2
@@ -80,5 +90,6 @@ jobs:
             ${{ steps.find_zip.outputs.zip_path }}
             ./publish/Skuld.exe
             ./publish/skuldConf.json
+            ./publish/resourceTemplate.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
