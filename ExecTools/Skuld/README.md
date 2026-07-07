@@ -73,6 +73,7 @@ Without MultiItem support, the generated annotations will have no effect.
   ]
 }
 ```
+<sup><sup>Get the default json files [here](https://github.com/neeye0n/flux/tree/main/skuld).</sup></sup>
 
 - **`sourceType`** — either:
   - `"ResourceUrl"` — fetches the JSON from a URL
@@ -81,9 +82,9 @@ Without MultiItem support, the generated annotations will have no effect.
 
 Add as many entries as you like — SKULD loads every valid source in the list and combines the results into one `System.zip`.
 
-### Default Sources
+### Default Sources 
 
-Out of the box, `skuldConf.json` points at SKULD's own hosted tables covering:
+Out of the box, `skuldConf.json` points at SKULD's these hosted tables covering:
 
 | Tag | Category | Purpose |
 |-----|----------|---------|
@@ -100,7 +101,7 @@ You don't need to touch anything to keep using these — they're only removed fr
 
 Want to add your own material tables — your server's custom items, a private crafting list, anything? SKULD supports it.
 
-1. **Grab the template**: download `resourceTemplate.json` from the [latest release](https://github.com/neeye0n/ROTools/releases)
+1. **Grab the template**: download `resourceTemplate.json` from the [latest release](https://github.com/neeye0n/ROTools/releases) <sub><sup>or [here](https://github.com/neeye0n/flux/tree/main/skuld).</sup></sub>
 2. **Fill it in** with your own data (see format below)
 3. **Add it to `skuldConf.json`**:
    - Hosting it online? Use `"sourceType": "ResourceUrl"` and point `path` at the URL
