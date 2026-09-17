@@ -46,6 +46,12 @@ function main()
 		end
 		-- END START Card Mini Preview
 
+		-- START Kublin event item QoL (uncomment if grf has GLITTERING_PAPER_REAL files)
+		-- if ItemID == 6031 then
+		--	DESC.identifiedResourceName = "GLITTERING_PAPER_REAL"
+		-- end
+		-- END Kublin event item QoL
+
 		-- Read and apply suffix to DESC.identifiedDisplayName
 		local displayName = DESC.identifiedDisplayName
 		if itemAnnotationsEnabled then
